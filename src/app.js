@@ -2,13 +2,15 @@
 const cors = require('cors');
 const path = require('path');
 const express = require('express');
+const { buildSchema } = require('graphql');
+const graphqlHTTP = require('express-graphql');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const app = express();
 require('dotenv').config();
 
 // Database
-require("./models/config");
+require("./db");
 
 // Routes
 //const Route = require('./routes/route');
@@ -18,7 +20,21 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.static('public'));
-// app.use(Route);
+
+// Graphql
+var schema = buildSchema(`
+  type Query {
+    hello: String
+  }
+`);
+
+app.use('/graphql',
+  graphqlHTTP({
+    schema: schema,
+    graphiql: true,
+  }),
+);
+
 
 // Handle Errors 404
 app.use((req, res, next) => {
