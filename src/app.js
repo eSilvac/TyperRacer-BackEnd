@@ -12,9 +12,6 @@ require('dotenv').config();
 // Database
 require("./db");
 
-// Routes
-//const Route = require('./routes/route');
-
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
@@ -22,19 +19,16 @@ app.use(express.json());
 app.use(express.static('public'));
 
 // Graphql
-var schema = buildSchema(`
-  type Query {
-    hello: String
-  }
-`);
+const schema = require('./schema/config')
+const resolvers = require('./schema/resolvers/index')
 
 app.use('/graphql',
   graphqlHTTP({
     schema: schema,
+    rootValue: resolvers,
     graphiql: true,
   }),
 );
-
 
 // Handle Errors 404
 app.use((req, res, next) => {
