@@ -3,16 +3,17 @@ const { objectType, queryType, mutationType, stringArg, arg, inputObjectType } =
 const User = objectType({
   name: 'User',
   definition(t) {
+    t.id('id');
     t.string('username');
     t.string('email');
-    t.field('token', { type: Token });
+    t.string('token', { required: true });
   },
 });
 
 const Token = objectType({
   name: "Token",
   definition(t) {
-    t.string("Token", { required: true });
+    t.string("token", { required: true });
   },
 });
 
@@ -51,7 +52,7 @@ const Mutation = mutationType({
   name: 'Mutation',
   definition(t) {
     t.field('registerUser', {
-      type: User,
+      type: Token,
       args: {
         userPayload: arg({
           type: UserRegisterInputType,
@@ -61,7 +62,7 @@ const Mutation = mutationType({
     });
 
     t.field('loginUser', {
-      type: User,
+      type: Token,
       args: {
         userPayload: arg({
           type: UserLoginInputType,
