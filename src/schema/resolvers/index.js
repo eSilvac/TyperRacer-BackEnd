@@ -18,7 +18,7 @@ const resolvers = {
         res.status(204).json({ msg: "User not found" });
       }
     } catch (err) {
-      res.status(403).send({ msg: "Invalid Token" });
+      throw new Error('INVALID_TOKEN');
     }
     console.log(args)
   },

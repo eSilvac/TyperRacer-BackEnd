@@ -19,14 +19,19 @@ app.use(express.json());
 app.use(express.static('public'));
 
 // Graphql
-const schema = require('./schema/config')
-const resolvers = require('./schema/resolvers/index')
+const schema = require('./schema/config');
+const resolvers = require('./schema/resolvers/index');
+const handleError = require('./schema/errors/index');
 
 app.use('/graphql',
   graphqlHTTP({
     schema: schema,
     rootValue: resolvers,
     graphiql: true,
+    customFormatErrorFn(err) {
+      console.log(err)
+      return handleError[err.message];
+    }
   }),
 );
 
