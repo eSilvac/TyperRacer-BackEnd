@@ -18,7 +18,7 @@ const Token = objectType({
 });
 
 const UserRegisterInputType = inputObjectType({
-  name: 'UserRegistInputType',
+  name: 'UserRegisterInputType',
   definition(t) {
     t.string('username', { required: true })
     t.string('email', { required: true })

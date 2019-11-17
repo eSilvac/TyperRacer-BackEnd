@@ -40,7 +40,7 @@ const resolvers = {
       
       return { token };
     } catch (err) {
-      console.log(err.message)
+        console.log(err.errors.email)
     }
   }, 
 
@@ -70,7 +70,7 @@ const resolvers = {
       }
         
     } catch (err) {
-      next(err);  
+      console.log(err.message) 
     }
   }
 }

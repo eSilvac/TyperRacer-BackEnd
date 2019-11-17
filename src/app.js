@@ -29,7 +29,6 @@ app.use('/graphql',
     rootValue: resolvers,
     graphiql: true,
     customFormatErrorFn(err) {
-      console.log(err)
       return handleError[err.message];
     }
   }),
