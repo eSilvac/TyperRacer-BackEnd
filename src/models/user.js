@@ -23,6 +23,11 @@ let userSchema = new mongoose.Schema({
     required: [true, "is required"]
   },
 
+  admin: {
+    type: Boolean,
+    default: false
+  },
+
   races: [{ type: Schema.ObjectId, ref: 'Race'}],
 
   participants: [{ type: Schema.ObjectId, ref: 'Participant'}]
