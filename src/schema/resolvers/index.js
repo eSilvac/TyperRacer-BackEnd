@@ -4,6 +4,9 @@ const bcrypt = require('bcrypt');
 // Model
 const User = require('../../models/user');
 
+// HandleError
+const NewError = require('../errors/handle')
+
 const resolvers = {
   currentUser: async (args) => {
     const token = args.token    
@@ -15,12 +18,11 @@ const resolvers = {
       if (user) {
         return user;
       } else {
-        res.status(204).json({ msg: "User not found" });
+        throw new Error('NOT_FOUND');
       }
     } catch (err) {
       throw new Error('INVALID_TOKEN');
     }
-    console.log(args)
   },
 
   registerUser: async ({ userPayload }) => {
@@ -40,25 +42,24 @@ const resolvers = {
       
       return { token };
     } catch (err) {
-        console.log(err.errors.email)
+      throw NewError(err);
     }
   }, 
 
   loginUser: async ({ userPayload }) => {
     try {
       const user = await User.findOne({ username: userPayload.username })
-
-      const isValidPassword = bcrypt.compareSync(
-        userPayload.password,
-        user.password
-      );
-
-      if (!isValidPassword) {
-        res.status(403).res('Usuario o contraseña invalido');
-        return;
-      }
       
       if (user) {
+        const isValidPassword = bcrypt.compareSync(
+          userPayload.password,
+          user.password
+        );
+
+        if (!isValidPassword) {
+          throw new Error('FORBIDDEN');
+        }
+
         const token = jwt.sign({
           userId: user._id,
           exp: Math.floor(Date.now() / 1000) + (60 * 60)
@@ -66,11 +67,11 @@ const resolvers = {
         
         return { token };
       } else {
-        res.status(404).json({ error: "User not found." });
+        throw new Error('NOT_FOUND');
       }
         
     } catch (err) {
-      console.log(err.message) 
+      throw NewError(err);
     }
   }
 }

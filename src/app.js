@@ -21,7 +21,7 @@ app.use(express.static('public'));
 // Graphql
 const schema = require('./schema/config');
 const resolvers = require('./schema/resolvers/index');
-const handleError = require('./schema/errors/index');
+const handleError = require('./schema/errors/errors');
 
 app.use('/graphql',
   graphqlHTTP({
@@ -29,7 +29,8 @@ app.use('/graphql',
     rootValue: resolvers,
     graphiql: true,
     customFormatErrorFn(err) {
-      return handleError[err.message];
+      const body = err.originalError.body || null;
+      return handleError(err.message, body);
     }
   }),
 );
