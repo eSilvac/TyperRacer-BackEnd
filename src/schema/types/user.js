@@ -6,6 +6,7 @@ const User = objectType({
     t.id('id');
     t.string('username');
     t.string('email');
+    t.string('admin');
     t.string('token', { required: true });
   },
 });
@@ -34,43 +35,4 @@ const UserLoginInputType = inputObjectType({
   }
 });
 
-const Query = queryType({
-  definition(t) {
-    t.field('currentUser', {
-      type: User,
-      nullable: true,
-      args: {
-        token: stringArg({
-          required: true
-        })
-      },
-    });
-  }
-});
-
-const Mutation = mutationType({
-  name: 'Mutation',
-  definition(t) {
-    t.field('registerUser', {
-      type: Token,
-      args: {
-        userPayload: arg({
-          type: UserRegisterInputType,
-          required: true
-        }) 
-      }
-    });
-
-    t.field('loginUser', {
-      type: Token,
-      args: {
-        userPayload: arg({
-          type: UserLoginInputType,
-          required: true
-        }) 
-      }
-    });
-  }
-});
-
-  module.exports = { Query, Mutation }
+module.exports = { User, Token, UserRegisterInputType, UserLoginInputType }
