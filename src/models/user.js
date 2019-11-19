@@ -33,4 +33,4 @@ let userSchema = new mongoose.Schema({
   participants: [{ type: Schema.ObjectId, ref: 'Participant'}]
 });
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model('User', userSchema);

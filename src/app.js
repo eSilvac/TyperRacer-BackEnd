@@ -29,7 +29,8 @@ app.use('/graphql',
     rootValue: resolvers,
     graphiql: true,
     customFormatErrorFn(err) {
-      const body = err.originalError.body || null;
+      console.log(err.name)
+      const body = err.originalError ? err.originalError.body || null : null;
       return handleError(err.message, body);
     }
   }),

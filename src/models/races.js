@@ -2,14 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let raceSchema = new mongoose.Schema({
-  user: { type: Schema.Types.ObjectId, ref: 'User' },
-  text: {
-    type: String,
-    required: [true, "is required"],
-  },
+  userId: { type: Schema.Types.ObjectId, ref: 'User' },
+  quoteId: { type: Schema.Types.ObjectId, ref: 'Quote' },
   language: {
     type: [String],
-    enum: ['ES', 'EN'],
+    enum: ['ESP', 'ENG'],
     required: [true, "is required"],
   },
   practice: {
@@ -17,3 +14,5 @@ let raceSchema = new mongoose.Schema({
     default: false
   }
 }, { timestamps: true });
+
+module.exports = mongoose.model('Race', raceSchema);

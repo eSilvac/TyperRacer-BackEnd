@@ -1,8 +1,9 @@
-const { objectType, enumType, queryType, mutationType, stringArg, arg, inputObjectType } = require('nexus');
+const { objectType, enumType, inputObjectType } = require('nexus');
 
 const Quote = objectType({
   name: 'Quote',
   definition(t) {
+    t.id('id');
     t.string('text');
     t.field('language', { type: QuoteLanguage })
   },
@@ -19,11 +20,12 @@ const QuoteLanguage = enumType({
 const QuoteInputType = inputObjectType({
   name: 'QuoteInputType',
   definition(t) {
-    t.string('text', { required: true })
+    t.id('userId', { required: true });
+    t.string('text', { required: true });
     t.field('language', { 
       type: QuoteLanguage,
       required: true 
-    })
+    });
   }
 });
 

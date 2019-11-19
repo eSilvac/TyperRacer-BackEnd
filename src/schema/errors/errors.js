@@ -1,4 +1,5 @@
 const errors = (message, data = null) => {
+  console.log(message)
   switch (message) {
     case 'VALIDATION': 
       return {
@@ -18,6 +19,12 @@ const errors = (message, data = null) => {
         statusCode: 403 
       }
 
+    case 'REQUIRE_USER': 
+      return {
+        message: 'Require User',
+        statusCode: 403 
+      }
+
     case 'INVALID_TOKEN': 
       return {
         message: 'Invalid Token',
@@ -29,11 +36,22 @@ const errors = (message, data = null) => {
         message: 'Not Found',
         statusCode: 404 
       }
+
+    case 'QUOTE_NOT_FOUND': 
+      return {
+        message: 'Quote Not Found',
+        statusCode: 404 
+      }
       
     case 'INTERNAL_SERVER_ERROR': 
       return {
         message: 'Internal Server Error',
         statusCode: 500 
+      }
+    default:
+      return {
+        message: message,
+        statusCode: 501
       }
   }
 }

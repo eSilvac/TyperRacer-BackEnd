@@ -26,6 +26,7 @@ const Mutation = mutationType({
     // Quotes Mutations
     t.field('createQuote', {
       type: 'Quote',
+      nullable: true,
       args: {
         quotePayload: arg({
           type: 'QuoteInputType',
@@ -34,6 +35,16 @@ const Mutation = mutationType({
       }
     });
 
+    // Races Mutations
+    t.field('createRace', {
+      type: 'RacePayloadType',
+      args: {
+        racePayload: arg({
+          type: 'RaceInputType',
+          required: true
+        }) 
+      }
+    });
   }
 });
 

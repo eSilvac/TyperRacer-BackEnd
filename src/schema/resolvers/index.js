@@ -2,8 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 // Model
-const User = require('../../models/user');
-
+const { User, Quote, Race } = require('../../models/config')
 // HandleError
 const NewError = require('../errors/handle')
 
@@ -70,6 +69,45 @@ const resolvers = {
         throw new Error('NOT_FOUND');
       }
         
+    } catch (err) {
+      throw NewError(err);
+    }
+  },
+
+  createQuote: async ({ quotePayload }) => {
+    try {
+      const user = await User.findById(quotePayload)
+
+      if (!user) throw new Error('NOT_FOUND'); 
+      if (!user.admin) throw new Error('FORBIDDEN'); 
+
+      const quote = await Quote.create(quotePayload);
+      return quote;
+    } catch (err) {
+      throw NewError(err);
+    }
+  },
+
+  createRace: async ({ racePayload }) => {
+
+    try {
+      if (racePayload.userId) {
+        const user = await User.findById(racePayload.userId)
+        if (!user) throw new Error('NOT_FOUND');
+        
+        racePayload['userId'] = user._id;
+      }
+
+      const quotes = await Quote.find({ language: racePayload.language });
+      if (quotes.length === 0) throw new Error('QUOTE_NOT_FOUND');
+      
+      const randomNumber = Math.floor(Math.random() * quotes.length);
+      const quote = quotes[randomNumber];
+
+      racePayload['quoteId'] = quote._id;
+      const race = await Race.create(racePayload);
+
+      return { race: race, quote: quote };
     } catch (err) {
       throw NewError(err);
     }

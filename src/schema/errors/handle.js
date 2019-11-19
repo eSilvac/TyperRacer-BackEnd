@@ -12,6 +12,7 @@ const handleError = (err) => {
   switch (err.name) {
     case 'ValidationError':
       for (field in err.errors) {
+        console.log(err.errors[field])
         switch (err.errors[field].properties.type) {
           case 'required':
             message[field] = 'Missing'
