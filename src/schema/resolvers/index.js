@@ -76,10 +76,9 @@ const resolvers = {
 
   createQuote: async ({ quotePayload }) => {
     try {
-      const user = await User.findById(quotePayload)
+      const user = await User.findById(quotePayload.userId)
 
       if (!user) throw new Error('NOT_FOUND'); 
-      if (!user.admin) throw new Error('FORBIDDEN'); 
 
       const quote = await Quote.create(quotePayload);
       return quote;
