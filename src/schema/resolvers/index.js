@@ -8,7 +8,7 @@ const NewError = require('../errors/handle')
 
 const resolvers = {
   currentUser: async (args) => {
-    const token = args.token    
+    const token = args.token; 
 
     try {
       const payload = jwt.verify(token, process.env.JWT_SECRET);
@@ -77,10 +77,13 @@ const resolvers = {
   createQuote: async ({ quotePayload }) => {
     try {
       const user = await User.findById(quotePayload.userId)
-
       if (!user) throw new Error('NOT_FOUND'); 
 
-      const quote = await Quote.create(quotePayload);
+      const quote = await Quote.create({
+        ...quotePayload,
+        quotePayload, text: clearText(quotePayload.text)  
+      });
+
       return quote;
     } catch (err) {
       throw NewError(err);
@@ -88,7 +91,6 @@ const resolvers = {
   },
 
   createRace: async ({ racePayload }) => {
-
     try {
       if (racePayload.userId) {
         const user = await User.findById(racePayload.userId)
@@ -111,6 +113,10 @@ const resolvers = {
       throw NewError(err);
     }
   }
+}
+
+const clearText = (text) => {
+  return text.trim().replace(/(\r\n|\n|\r)/gm, ' ').replace(/\s\s+/g, ' ');
 }
 
 module.exports = resolvers;

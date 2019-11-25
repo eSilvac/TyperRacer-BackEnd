@@ -13,6 +13,7 @@ const Mutation = mutationType({
         }) 
       }
     });
+
     t.field('loginUser', {
       type: 'Token',
       args: {

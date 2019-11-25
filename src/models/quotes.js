@@ -5,8 +5,8 @@ let quoteSchema = new mongoose.Schema({
   userId: { type: Schema.Types.ObjectId, ref: 'User' },
   text: {
     type: String,
-    maxlength: [400, 'Too long'],
-    minlength: [150, 'Too short'],
+    maxlength: [200, 'Too long'],
+    minlength: [50, 'Too short'],
     required: [true, "is required"],
   },
   language: {

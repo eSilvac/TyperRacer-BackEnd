@@ -18,7 +18,6 @@ const Query = queryType({
       type: 'Quote',
       nullable: true,
     });
-
   }
 });
 
