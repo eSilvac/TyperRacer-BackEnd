@@ -46,6 +46,17 @@ const Mutation = mutationType({
         }) 
       }
     });
+
+    // Participant Mutations
+    t.field('createParticipant', {
+      type: 'Participant',
+      args: {
+        participantPayload: arg({
+          type: 'ParticipantInputType',
+          required: true
+        }) 
+      }
+    });
   }
 });
 

@@ -2,7 +2,8 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 // Model
-const { User, Quote, Race } = require('../../models/config')
+const { User, Quote, Race, Participant } = require('../../models/config')
+
 // HandleError
 const NewError = require('../errors/handle')
 
@@ -112,7 +113,18 @@ const resolvers = {
     } catch (err) {
       throw NewError(err);
     }
+  },
+
+  createParticipant: async ({ participantPayload }) => {
+    try {
+      const participant = await Participant.create(participantPayload);
+
+      return participant;
+    } catch (err) {
+      throw NewError(err);
+    }
   }
+
 }
 
 const clearText = (text) => {

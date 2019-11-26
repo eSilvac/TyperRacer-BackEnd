@@ -6,8 +6,18 @@ let participantSchema = new mongoose.Schema({
   userId: { type: Schema.Types.ObjectId, ref: 'User' },
   wpm: {
     type: Number,
+    default: 0,
     required: [true, "is required"],
-  }
-}, { timestamps: true });
+  },
+  progress: {
+    type: Number,
+    default: 0,
+    required: [true, "is required"],
+  },
+  status: {
+    type: [String],
+    enum: ['onProgress', 'ended'],
+  },
+});
 
 module.exports = mongoose.model("Participant", participantSchema);
