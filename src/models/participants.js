@@ -18,6 +18,6 @@ let participantSchema = new mongoose.Schema({
     type: [String],
     enum: ['onProgress', 'ended'],
   },
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model("Participant", participantSchema);

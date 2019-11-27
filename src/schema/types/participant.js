@@ -10,6 +10,15 @@ const Participant = objectType({
   },
 });
 
+const ParticipantTiming = objectType({
+  name: 'ParticipantTiming',
+  definition(t) {
+    t.int('toStart', { required: true })
+    t.int('toEnd', { required: true })
+    t.int('current', { required: true })
+  },
+});
+
 const ParticipantStatus = enumType({
   name: 'ParticipantStatus',
   members: [
@@ -18,6 +27,13 @@ const ParticipantStatus = enumType({
   ]
 });
 
+const ParticipantPayload = objectType({
+  name: 'ParticipantPayload',
+  definition(t) {
+    t.field('participant', { type: Participant })
+    t.field('timing', { type: ParticipantTiming })
+  },
+});
 
 const ParticipantInputType = inputObjectType({
   name: 'ParticipantInputType',
@@ -33,4 +49,4 @@ const ParticipantInputType = inputObjectType({
   }
 });
 
-module.exports = { Participant, ParticipantInputType }
+module.exports = { Participant, ParticipantInputType, ParticipantPayload }

@@ -18,6 +18,17 @@ const Query = queryType({
       type: 'Quote',
       nullable: true,
     });
+
+    // RaceQueries
+    t.field('getRace', {
+      type: 'RacePayloadType',
+      nullable: true,
+      args: {
+        id: stringArg({
+          required: true
+        })
+      },
+    });
   }
 });
 

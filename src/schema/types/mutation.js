@@ -49,7 +49,7 @@ const Mutation = mutationType({
 
     // Participant Mutations
     t.field('createParticipant', {
-      type: 'Participant',
+      type: 'ParticipantPayload',
       args: {
         participantPayload: arg({
           type: 'ParticipantInputType',

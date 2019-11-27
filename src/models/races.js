@@ -12,7 +12,12 @@ let raceSchema = new mongoose.Schema({
   practice: {
     type: Boolean,
     default: false
-  }
+  },
+  status: {
+    type: String,
+    enum: ['waiting', 'started', 'ended'],
+    default: 'waiting'
+  },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Race', raceSchema);

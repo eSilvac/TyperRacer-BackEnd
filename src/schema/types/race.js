@@ -4,8 +4,8 @@ const Race = objectType({
   name: 'Race',
   definition(t) {
     t.id('id', { required: true })
+    t.field('status', { type: RaceStatus })
     t.field('language', { type: RaceLanguage })
-    t.string('createdAt', { required: true })
   },
 });
 
@@ -17,6 +17,14 @@ const RaceLanguage = enumType({
   ]
 });
 
+const RaceStatus = enumType({
+  name: 'RaceStatus',
+  members: [
+    { name: 'waiting' },
+    { name: 'started' },
+    { name: 'ended' },
+  ]
+});
 
 const RacePayloadType = objectType({
   name: 'RacePayloadType',

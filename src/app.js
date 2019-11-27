@@ -1,16 +1,26 @@
 // Initial Config
+const http = require('http');
 const cors = require('cors');
 const path = require('path');
 const express = require('express');
+const socketIO = require('socket.io');
 const { buildSchema } = require('graphql');
 const graphqlHTTP = require('express-graphql');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
+
 const app = express();
+const httpServer = http.createServer(app);
+
 require('dotenv').config();
 
 // Database
 require("./db");
+
+// Websocket
+const io = socketIO(httpServer);
+global.io = io;
+require("./websocket/config")(io);
 
 // Middleware
 app.use(cors());
@@ -51,4 +61,4 @@ app.use((err, req, res, next) => {
   }
 });
 
-module.exports = app;
+module.exports = { httpServer, io };

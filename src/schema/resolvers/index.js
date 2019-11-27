@@ -7,6 +7,10 @@ const { User, Quote, Race, Participant } = require('../../models/config')
 // HandleError
 const NewError = require('../errors/handle')
 
+// WS
+const { io } = require('../../app');
+const setCountDownTimer = require('../../websocket/actions')
+
 const resolvers = {
   currentUser: async (args) => {
     const token = args.token; 
@@ -91,6 +95,22 @@ const resolvers = {
     }
   },
 
+  getRace: async (args) => {
+    const raceId = args.id; 
+
+    try {
+      const race = await Race.findById(raceId);
+      if (!race) { throw new Error('NOT_FOUND'); }
+
+      const quoteId = race.quoteId;
+      const quote = await Quote.findById(quoteId);
+      
+      return { race, quote }
+    } catch (err) {
+      throw new Error('INVALID_ID');
+    }
+  },
+
   createRace: async ({ racePayload }) => {
     try {
       if (racePayload.userId) {
@@ -118,8 +138,10 @@ const resolvers = {
   createParticipant: async ({ participantPayload }) => {
     try {
       const participant = await Participant.create(participantPayload);
+      const race = await Race.findById(participant.raceId);
+      const timing = generateParticipantTiming(participant.createdAt, race.createdAt)
 
-      return participant;
+      return { participant, timing };
     } catch (err) {
       throw NewError(err);
     }
@@ -129,6 +151,19 @@ const resolvers = {
 
 const clearText = (text) => {
   return text.trim().replace(/(\r\n|\n|\r)/gm, ' ').replace(/\s\s+/g, ' ');
+}
+
+const generateParticipantTiming = (participantTime, raceTime) => {
+  const difference = Math.floor((participantTime - raceTime) / 1000);
+  const toStart = 60 - difference;
+  const toEnd = toStart < 0 ? ( 180 - difference ) : 120;
+  const current = toStart < 0 ? ( difference - 60 ) : 0;
+
+  return {
+    toEnd: toEnd >= 0 ? toEnd : 0,
+    toStart: toStart >= 0 ? toStart : 0,
+    current: current
+  }
 }
 
 module.exports = resolvers;
