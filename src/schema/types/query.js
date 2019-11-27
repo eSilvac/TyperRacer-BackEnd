@@ -29,6 +29,16 @@ const Query = queryType({
         })
       },
     });
+    
+    //ParticipantQueries
+    t.list.field('getParticipants', {
+      type: 'Participant',
+      args: {
+        raceId: stringArg({
+          required: true
+        })
+      },
+    });
   }
 });
 

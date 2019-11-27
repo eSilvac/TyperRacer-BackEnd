@@ -20,7 +20,6 @@ require("./db");
 // Websocket
 const io = socketIO(httpServer);
 global.io = io;
-require("./websocket/config")(io);
 
 // Middleware
 app.use(cors());

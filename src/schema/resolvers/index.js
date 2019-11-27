@@ -8,8 +8,7 @@ const { User, Quote, Race, Participant } = require('../../models/config')
 const NewError = require('../errors/handle')
 
 // WS
-const { io } = require('../../app');
-const setCountDownTimer = require('../../websocket/actions')
+const connectRaceToWS = require('../../websocket/config')
 
 const resolvers = {
   currentUser: async (args) => {
@@ -128,6 +127,7 @@ const resolvers = {
 
       racePayload['quoteId'] = quote._id;
       const race = await Race.create(racePayload);
+      connectRaceToWS(race._id);
 
       return { race: race, quote: quote };
     } catch (err) {
@@ -155,9 +155,9 @@ const clearText = (text) => {
 
 const generateParticipantTiming = (participantTime, raceTime) => {
   const difference = Math.floor((participantTime - raceTime) / 1000);
-  const toStart = 60 - difference;
-  const toEnd = toStart < 0 ? ( 180 - difference ) : 120;
-  const current = toStart < 0 ? ( difference - 60 ) : 0;
+  const toStart = 10 - difference;
+  const toEnd = toStart < 0 ? ( 130 - difference ) : 120;
+  const current = toStart < 0 ? ( difference - 10 ) : 0;
 
   return {
     toEnd: toEnd >= 0 ? toEnd : 0,
